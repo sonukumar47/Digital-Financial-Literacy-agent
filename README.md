@@ -67,6 +67,35 @@ The app opens at `http://localhost:8501`
 
 ---
 
+## 🚀 Deploy to Streamlit Community Cloud
+
+You can share this app publicly for free using [Streamlit Community Cloud](https://streamlit.io/cloud).
+
+### Step 1 — Push your code to GitHub
+Make sure your repository is on GitHub (`.env` and `.streamlit/secrets.toml` are gitignored — never committed).
+
+### Step 2 — Sign in to Streamlit Cloud
+Go to [share.streamlit.io](https://share.streamlit.io) and sign in with your GitHub account.
+
+### Step 3 — Deploy the app
+1. Click **"New app"**
+2. Select your repository, branch (`main`), and set **Main file path** to `app.py`
+3. Click **"Advanced settings"** → **"Secrets"**
+4. Paste the following (replace values with your real credentials):
+
+```toml
+IBM_CLOUD_API_KEY       = "your_ibm_cloud_api_key_here"
+IBM_WATSONX_PROJECT_ID  = "your_watsonx_project_id_here"
+IBM_WATSONX_URL         = "https://us-south.ml.cloud.ibm.com"
+GRANITE_MODEL_ID        = "ibm/granite-4-h-small"
+```
+
+5. Click **"Deploy!"** — your app will be live at a `*.streamlit.app` URL in ~2 minutes.
+
+> **Note:** The FAISS index is built automatically on first run. The `sentence-transformers` model (~90 MB) is also downloaded on first boot — subsequent cold starts reuse the cache.
+
+---
+
 ## 📂 Project Structure
 
 ```

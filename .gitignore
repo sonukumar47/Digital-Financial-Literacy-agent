@@ -1,5 +1,6 @@
 # Credentials - NEVER commit these
 .env
+.streamlit/secrets.toml
 
 # Python cache
 __pycache__/

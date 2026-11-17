@@ -1,0 +1,378 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #001a33;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 24px 20px;
+    min-height: 100vh;
+  }
+
+  h1 {
+    color: #FFD700;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .subtitle {
+    color: #AACCFF;
+    font-size: 12px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  /* ── TOP PIPELINE ROW ── */
+  .pipeline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    width: 100%;
+    max-width: 1100px;
+    margin-bottom: 10px;
+  }
+
+  .box {
+    border-radius: 10px;
+    padding: 12px 10px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1.45;
+    min-width: 148px;
+    max-width: 165px;
+    flex-shrink: 0;
+  }
+  .box .icon { font-size: 22px; display: block; margin-bottom: 4px; }
+  .box .label { font-size: 14px; font-weight: 900; }
+  .box .sub   { font-size: 11px; font-weight: 400; margin-top: 3px; color: rgba(0,0,0,0.65); }
+
+  .box-user     { background: #FFD700; color: #001a33; }
+  .box-lang     { background: #4FC3F7; color: #001a33; }
+  .box-rag      { background: #81C784; color: #001a33; }
+  .box-llm      { background: #FF8A65; color: #001a33; }
+  .box-translate{ background: #4FC3F7; color: #001a33; }
+
+  .arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #AACCFF;
+    font-size: 11px;
+    min-width: 56px;
+    text-align: center;
+    line-height: 1.4;
+    flex-shrink: 0;
+  }
+  .arrow svg { margin: 2px 0; }
+
+  /* ── RETURN ROW ── */
+  .return-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    max-width: 1100px;
+    margin-bottom: 8px;
+    padding-right: 0;
+  }
+  .return-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #AACCFF;
+    font-size: 12px;
+    font-style: italic;
+  }
+  .return-line hr {
+    border: none;
+    border-top: 2px dashed #AACCFF;
+    width: 480px;
+  }
+
+  /* ── TRANSLATE + BACK ARROW ── */
+  .bottom-flow {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1100px;
+    margin-bottom: 20px;
+    gap: 0;
+  }
+  .box-translate {
+    min-width: 148px;
+    max-width: 165px;
+    flex-shrink: 0;
+  }
+  .back-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #AACCFF;
+    font-size: 11px;
+    min-width: 56px;
+    text-align: center;
+    line-height: 1.6;
+    padding-top: 8px;
+    flex-shrink: 0;
+  }
+  .final-box {
+    background: #FFD700;
+    color: #001a33;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: bold;
+    min-width: 148px;
+    max-width: 165px;
+    text-align: center;
+    line-height: 1.45;
+    flex-shrink: 0;
+    align-self: center;
+  }
+  .final-box .icon { font-size: 22px; display: block; margin-bottom: 4px; }
+  .spacer { flex: 1; }
+
+  /* ── KNOWLEDGE BASE SECTION ── */
+  .kb-section {
+    width: 100%;
+    max-width: 1100px;
+    border-top: 2px solid #FFD700;
+    padding-top: 14px;
+  }
+  .kb-title {
+    color: #FFD700;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+  .kb-grid {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+  .kb-box {
+    background: #B2EBF2;
+    color: #001a33;
+    border-radius: 8px;
+    padding: 10px 8px;
+    font-size: 11.5px;
+    font-weight: 600;
+    text-align: center;
+    flex: 1;
+    line-height: 1.5;
+    min-width: 90px;
+  }
+  .kb-box .kbicon { font-size: 18px; display: block; margin-bottom: 3px; }
+  .kb-box .ksrc   { font-size: 10px; color: #005f7f; font-weight: 400; }
+
+  .kb-up-arrow {
+    text-align: center;
+    color: #81C784;
+    font-size: 11px;
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #AACCFF;
+  }
+  .legend-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* footer */
+  .footer {
+    margin-top: 20px;
+    color: #57606a;
+    font-size: 11px;
+    text-align: center;
+    border-top: 1px solid #1a3a5c;
+    padding-top: 10px;
+    width: 100%;
+    max-width: 1100px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Architecture Blueprint</h1>
+<div class="subtitle">Digital Financial Literacy Agent  ·  IBM Granite + RAG + Multilingual Streamlit</div>
+
+
+<div class="pipeline">
+
+  
+  <div class="box box-user">
+    <span class="icon">👤</span>
+    <span class="label">USER</span>
+    <div class="sub">Streamlit UI<br />(any language)</div>
+  </div>
+
+  
+  <div class="arrow">
+    <div>Query</div>
+    <svg width="44" height="18"><line x1="0" y1="9" x2="38" y2="9" stroke="#AACCFF" stroke-width="2"></line><polygon points="38,4 44,9 38,14" fill="#AACCFF"></polygon></svg>
+    <div>any lang</div>
+  </div>
+
+  
+  <div class="box box-lang">
+    <span class="icon">🌐</span>
+    <span class="label">LANGUAGE</span>
+    <div class="sub">LangDetect<br />+ Deep Translator<br />→ English</div>
+  </div>
+
+  
+  <div class="arrow">
+    <div>English</div>
+    <svg width="44" height="18"><line x1="0" y1="9" x2="38" y2="9" stroke="#AACCFF" stroke-width="2"></line><polygon points="38,4 44,9 38,14" fill="#AACCFF"></polygon></svg>
+    <div>query</div>
+  </div>
+
+  
+  <div class="box box-rag">
+    <span class="icon">🔍</span>
+    <span class="label">RAG ENGINE</span>
+    <div class="sub">LangChain LCEL<br />FAISS Retriever<br />ChatPromptTemplate</div>
+  </div>
+
+  
+  <div class="arrow">
+    <div>Prompt</div>
+    <svg width="44" height="18"><line x1="0" y1="9" x2="38" y2="9" stroke="#AACCFF" stroke-width="2"></line><polygon points="38,4 44,9 38,14" fill="#AACCFF"></polygon></svg>
+    <div>+ context</div>
+  </div>
+
+  
+  <div class="box box-llm">
+    <span class="icon">🤖</span>
+    <span class="label">IBM GRANITE</span>
+    <div class="sub">granite-4-h-small<br />watsonx.ai<br />ChatWatsonx API</div>
+  </div>
+
+</div>
+
+
+<div class="return-row">
+  <div class="return-line">
+    <span>◄</span>
+    <hr />
+    <span style="white-space:nowrap;color:#AACCFF">Answer (English) returned to RAG Engine</span>
+    <hr style="width:60px" />
+    <span>◄</span>
+  </div>
+</div>
+
+
+<div class="bottom-flow">
+
+  
+  <div class="box box-translate">
+    <span class="icon">🌐</span>
+    <span class="label">TRANSLATE</span>
+    <div class="sub">English → User Language<br />+ ⚠️ Fraud Alert<br />+ 📖 Source Tag</div>
+  </div>
+
+  
+  <div class="back-arrow">
+    <svg width="44" height="18"><line x1="0" y1="9" x2="38" y2="9" stroke="#AACCFF" stroke-width="2"></line><polygon points="38,4 44,9 38,14" fill="#AACCFF"></polygon></svg>
+    <div>Final answer</div>
+    <div>(user language)</div>
+  </div>
+
+  
+  <div class="final-box">
+    <span class="icon">👤</span>
+    <span class="label">USER</span>
+    <div style="font-size:11px;font-weight:400;margin-top:3px;color:rgba(0,0,0,0.65)">Receives answer<br />in their language<br />with source cited</div>
+  </div>
+
+  <div class="spacer"></div>
+
+  
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-width:148px;padding-bottom:4px">
+    <div style="color:#81C784;font-size:11px;text-align:center;font-style:italic;margin-bottom:4px">Top-4 chunks<br />↑ retrieved</div>
+    <svg width="20" height="30"><line x1="10" y1="30" x2="10" y2="4" stroke="#81C784" stroke-width="2"></line><polygon points="4,8 10,0 16,8" fill="#81C784"></polygon></svg>
+  </div>
+
+</div>
+
+
+<div class="kb-section">
+  <div class="kb-title">📚 KNOWLEDGE BASE — FAISS Vector Store  ·  sentence-transformers/all-MiniLM-L6-v2  ·  10 Documents</div>
+  <div class="kb-grid">
+    <div class="kb-box">
+      <span class="kbicon">📲</span>
+      UPI Payments
+      <div class="ksrc">Source: NPCI</div>
+    </div>
+    <div class="kb-box">
+      <span class="kbicon">🛡️</span>
+      Online Scams &amp; Fraud
+      <div class="ksrc">Source: RBI / MHA</div>
+    </div>
+    <div class="kb-box">
+      <span class="kbicon">📈</span>
+      Interest Rates &amp; Loans
+      <div class="ksrc">Source: RBI</div>
+    </div>
+    <div class="kb-box">
+      <span class="kbicon">💰</span>
+      Budgeting
+      <div class="ksrc">Source: RBI</div>
+    </div>
+    <div class="kb-box">
+      <span class="kbicon">🏦</span>
+      Savings Instruments
+      <div class="ksrc">Source: India Post / RBI</div>
+    </div>
+    <div class="kb-box">
+      <span class="kbicon">💼</span>
+      Personal Finance &amp; Digital Safety
+      <div class="ksrc">Source: SEBI / RBI / GoI</div>
+    </div>
+  </div>
+</div>
+
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#FFD700"></div>User / Streamlit</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#4FC3F7"></div>Language Layer</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#81C784"></div>RAG / Vector Store</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#FF8A65"></div>IBM Granite LLM</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#B2EBF2"></div>Knowledge Base</div>
+</div>
+
+<div class="footer">Made with IBM Bob</div>
+
+</body>
+</html>
