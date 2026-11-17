@@ -18,13 +18,25 @@ from langchain_ibm import ChatWatsonx
 load_dotenv()
 
 # ---------------------------------------------------------------------------
+# Helper: read from st.secrets (Streamlit Cloud) with fallback to os.getenv
+# ---------------------------------------------------------------------------
+
+def _get_secret(key: str, default: str = "") -> str:
+    """Read a secret from st.secrets (Streamlit Cloud) or os.environ (local)."""
+    try:
+        import streamlit as st
+        return st.secrets.get(key, os.getenv(key, default))
+    except Exception:
+        return os.getenv(key, default)
+
+# ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
 
-IBM_CLOUD_API_KEY      = os.getenv("IBM_CLOUD_API_KEY", "")
-IBM_WATSONX_PROJECT_ID = os.getenv("IBM_WATSONX_PROJECT_ID", "")
-IBM_WATSONX_URL        = os.getenv("IBM_WATSONX_URL", "https://us-south.ml.cloud.ibm.com")
-GRANITE_MODEL_ID       = os.getenv("GRANITE_MODEL_ID", "ibm/granite-4-h-small")
+IBM_CLOUD_API_KEY      = _get_secret("IBM_CLOUD_API_KEY")
+IBM_WATSONX_PROJECT_ID = _get_secret("IBM_WATSONX_PROJECT_ID")
+IBM_WATSONX_URL        = _get_secret("IBM_WATSONX_URL", "https://us-south.ml.cloud.ibm.com")
+GRANITE_MODEL_ID       = _get_secret("GRANITE_MODEL_ID", "ibm/granite-4-h-small")
 
 EMBED_MODEL       = "sentence-transformers/all-MiniLM-L6-v2"
 VECTOR_STORE_PATH = "faiss_index"
