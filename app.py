@@ -126,12 +126,18 @@ init_session()
 # RAG / Vector store bootstrap (cached)
 # ---------------------------------------------------------------------------
 @st.cache_resource(show_spinner=False)
-def get_rag_chain():
-    """Build or load the FAISS index and return the RAG chain."""
+def get_vector_store():
+    """Build or load the FAISS index (cached — slow to build)."""
     vs = load_vector_store()
     if vs is None:
         docs = get_all_documents()
         vs = build_vector_store(docs)
+    return vs
+
+
+def get_rag_chain():
+    """Build the RAG chain fresh each session (LLM must not be cached)."""
+    vs = get_vector_store()
     return build_rag_chain(vs)
 
 

@@ -15,31 +15,31 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_ibm import ChatWatsonx
 
-load_dotenv()
+load_dotenv(override=True)
 
 # ---------------------------------------------------------------------------
 # Helper: read from st.secrets (Streamlit Cloud) with fallback to os.getenv
 # ---------------------------------------------------------------------------
 
 def _get_secret(key: str, default: str = "") -> str:
-    """Read a secret from st.secrets (Streamlit Cloud) or os.environ (local)."""
+    """Read a secret from st.secrets (Streamlit Cloud) or os.environ (local).
+    Called at runtime (not import time) so load_dotenv() has already run.
+    """
     try:
         import streamlit as st
-        return st.secrets.get(key, os.getenv(key, default))
+        val = st.secrets.get(key, "")
+        if val:
+            return val
     except Exception:
-        return os.getenv(key, default)
+        pass
+    return os.getenv(key, default)
 
 # ---------------------------------------------------------------------------
-# Constants
+# Constants (defaults only — real values resolved at runtime via _get_secret)
 # ---------------------------------------------------------------------------
-
-IBM_CLOUD_API_KEY      = _get_secret("IBM_CLOUD_API_KEY")
-IBM_WATSONX_PROJECT_ID = _get_secret("IBM_WATSONX_PROJECT_ID")
-IBM_WATSONX_URL        = _get_secret("IBM_WATSONX_URL", "https://us-south.ml.cloud.ibm.com")
-GRANITE_MODEL_ID       = _get_secret("GRANITE_MODEL_ID", "ibm/granite-4-h-small")
-
 EMBED_MODEL       = "sentence-transformers/all-MiniLM-L6-v2"
 VECTOR_STORE_PATH = "faiss_index"
+
 
 FINANCIAL_PROMPT = ChatPromptTemplate.from_messages([
     (
@@ -66,10 +66,10 @@ FINANCIAL_PROMPT = ChatPromptTemplate.from_messages([
 def get_watsonx_llm() -> ChatWatsonx:
     """Initialise IBM Granite via watsonx.ai chat API."""
     return ChatWatsonx(
-        model_id=GRANITE_MODEL_ID,
-        url=IBM_WATSONX_URL,
-        apikey=IBM_CLOUD_API_KEY,
-        project_id=IBM_WATSONX_PROJECT_ID,
+        model_id=_get_secret("GRANITE_MODEL_ID", "ibm/granite-4-h-small"),
+        url=_get_secret("IBM_WATSONX_URL", "https://us-south.ml.cloud.ibm.com"),
+        apikey=_get_secret("IBM_CLOUD_API_KEY"),
+        project_id=_get_secret("IBM_WATSONX_PROJECT_ID"),
         params={
             "max_tokens": 512,
             "temperature": 0.3,
